@@ -1,3 +1,12 @@
+## Fork of https://github.com/arkworks-rs/poly-commit
+
+This is a fork of arkworks poly-commit that includes another polynomial commitment scheme that extends KZG10 with additional building blocks.
+
+### TODO
+Describe here the changes.
+
+Below is the information of the original repository.
+
 <h1 align="center">Polynomial Commitments</h1>
 
 <p align="center">
