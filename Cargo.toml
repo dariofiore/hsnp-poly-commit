@@ -36,6 +36,8 @@ hashbrown = { version = "0.9", optional = true }
 digest = "0.9"
 rayon = { version = "1", optional = true }
 derivative = { version = "2", features = [ "use_core" ] }
+blake2 = { version = "0.9", default-features = false }
+rand_chacha = { version = "0.3.0", default-features = false }
 
 [dev-dependencies]
 ark-ed-on-bls12-381 = { version = "^0.3.0", default-features = false }
@@ -61,3 +63,9 @@ std = [ "ark-ff/std", "ark-ec/std", "ark-nonnative-field/std", "ark-poly/std", "
 r1cs = [ "ark-relations", "ark-r1cs-std", "ark-nonnative-field", "hashbrown", "ark-sponge/r1cs"]
 print-trace = [ "ark-std/print-trace" ]
 parallel = [ "std", "ark-ff/parallel", "ark-ec/parallel", "ark-poly/parallel", "ark-std/parallel", "rayon" ]
+
+[[bench]]
+name = "polycommit-benches"
+path = "benches/bench.rs"
+harness = false
+required-features = ["std"]

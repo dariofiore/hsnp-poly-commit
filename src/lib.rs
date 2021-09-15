@@ -66,6 +66,7 @@ macro_rules! println {
     () => {};
     ($($arg: tt)*) => {};
 }
+
 /// The core [[KZG10]][kzg] construction.
 ///
 /// [kzg]: http://cacr.uwaterloo.ca/techreports/2010/cacr2010-10.pdf
@@ -97,6 +98,13 @@ pub mod sonic_pc;
 ///
 /// [pcdas]: https://eprint.iacr.org/2020/499
 pub mod ipa_pc;
+
+/// An extension of the polynomial commitment in [[KZG10]][kzg],
+/// to support evaluations proofs for committed results.
+/// The construction is detailed in [[FT21]][ft21].
+///
+/// [ft21]: TBA
+pub mod hsnp_pc;
 
 /// Defines the challenge strategies and challenge generator.
 pub mod challenge;

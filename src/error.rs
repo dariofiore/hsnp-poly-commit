@@ -29,6 +29,9 @@ pub enum Error {
     /// The degree provided in setup was too small; degree 0 polynomials
     /// are not supported.
     DegreeIsZero,
+    
+    /// The degree provided is greater than 0
+    DegreeIsNotZero,
 
     /// The degree of the polynomial passed to `commit` or `open`
     /// was too large.
@@ -115,6 +118,10 @@ impl core::fmt::Display for Error {
             Error::DegreeIsZero => write!(
                 f,
                 "this scheme does not support committing to degree 0 polynomials"
+            ),
+            Error::DegreeIsNotZero => write!(
+                f,
+                "this function does not support polynomials of degree > 0"
             ),
             Error::TooManyCoefficients {
                 num_coefficients,
