@@ -181,8 +181,13 @@ where
         Ok((powers, vk))
     }
 
-    ///
-    /// 
+    
+    /// Outputs specialized proving key and verification key for the CPsvec CPSNARK
+    /// The specialization is with respect to the number t of signed inputs;
+    /// the proving key consists of the vanishing polynomial in domain_t, which
+    /// are the first t elements of the multiplciative subgroup H of size n;
+    /// the specialized verification key consists of a deterministic commitment in
+    /// G2 of this vanishing polynomial, i.e., g_2^{z_t(s)}.
     pub fn specialize(
         pp: &UniversalParams<E>,
         vk: &VerifierKey<E>,
@@ -219,6 +224,20 @@ where
             com_zt: c_z.into_affine(),
         };
         Ok((z_t, vk_t))
+    }
+
+    ///Outputs the elements of the public parameters that are necessary to
+    /// compute a commitment to a scalar, as well as the generator of G2
+    pub fn get_scalar_comkey(
+        pp: &UniversalParams<E>,
+    ) -> Result<ScalarComKey<E>, Error> {
+
+        let ck = ScalarComKey {
+            g: pp.powers_of_g[0],
+            gamma_g: pp.powers_of_gamma_g[&0],
+            h: pp.h,
+        };
+        Ok(ck)
     }
 
     /// Compute a vector of commitments to all the lagrange polynomials in a domain
@@ -525,8 +544,13 @@ where
         com_q.add_assign_mixed(&com_r);
         end_timer!(witness_comm_time);
 
-        //TODO: Compute ZKPoK for com_z
-        let pi_z = Self::pok_scalar_prove(vk, com_z, z, rand_z, rng).unwrap();
+        //Compute ZKPoK for com_z
+        let ck = ScalarComKey {
+            g: vk.g,
+            gamma_g: vk.gamma_g,
+            h: vk.h,
+        };
+        let pi_z = Self::pok_scalar_prove(&ck, com_z, z, rand_z, rng).unwrap();
         //Compute ZKPoK for e()
         
         //tilde{g} = h_1^{s - y}
@@ -615,14 +639,20 @@ where
 
         let bytes = to_bytes![&Self::CPEV_NAME, point, &com_p.0, &com_z.0, &proof.pi_z.com1, &proof.pi_z.sigma, &proof.pi_z.tau, &proof.com_q, u].unwrap();
         let rhs = fiat_shamir_hashfn::<E,P>(&bytes);
-        let ver_pi_z = Self::pok_scalar_ver(vk, com_z, &proof.pi_z).unwrap();
+        let ck = ScalarComKey {
+            g: vk.g,
+            gamma_g: vk.gamma_g,
+            h: vk.h,
+        };
+        let ver_pi_z = Self::pok_scalar_ver(&ck, com_z, &proof.pi_z).unwrap();
 
         Ok(proof.rho == rhs && ver_pi_z)
     }
 
     ///Generates a ZKPoK of the opening of a commitment to a scalar with hiding bound 0
     pub fn pok_scalar_prove<R: RngCore>(
-        vk: &VerifierKey<E>,
+        //vk: &VerifierKey<E>,
+        ck: &ScalarComKey<E>,
         com: &Commitment<E>,
         p: &P,
         opn_p: &Randomness<E::Fr, P>,
@@ -633,7 +663,7 @@ where
         Self::check_degree_is_zero(opn_p.blinding_polynomial.degree())?;
         
         let (gamma, delta) = (E::Fr::rand(rng), E::Fr::rand(rng));
-        let first = (vk.g.mul(gamma) + &vk.gamma_g.mul(delta)).into_affine();
+        let first = (ck.g.mul(gamma) + &ck.gamma_g.mul(delta)).into_affine();
         //generate random oracle challenge
         let bytes = to_bytes![&Self::POK_NAME, &com.0, &first].unwrap();
         let rho = fiat_shamir_hashfn::<E,P>(&bytes);
@@ -650,7 +680,8 @@ where
 
     ///Verifies a ZKPoK of the opening of a commitment to a scalar with hiding bound 0
     pub fn pok_scalar_ver(
-        vk: &VerifierKey<E>,
+        //vk: &VerifierKey<E>,
+        ck: &ScalarComKey<E>,
         com: &Commitment<E>,
         pi: &PoKProof<E>,
     ) -> Result<bool, Error> {
@@ -659,10 +690,9 @@ where
         let bytes = to_bytes![&Self::POK_NAME, &com.0, &pi.com1].unwrap();
         let rho = fiat_shamir_hashfn::<E,P>(&bytes);
         //check that com1 com^rho = g_1^sigma h_1^tu
-        let lhs = vk.g.mul(pi.sigma) + &vk.gamma_g.mul(pi.tau);
+        let lhs = ck.g.mul(pi.sigma) + &ck.gamma_g.mul(pi.tau);
         let rhs = pi.com1.into_projective() + &com.0.mul(rho);
 
-        //not working -- to debug
         Ok(lhs == rhs)
         
     }

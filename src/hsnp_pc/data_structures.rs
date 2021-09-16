@@ -721,3 +721,28 @@ impl<E: PairingEngine> ToBytes for SpecializedVerifierKey<E> {
         self.com_zt.write(&mut writer)
     }
 }
+
+/// `ScalarComKey` is a commitment key sufficient to commit to a scalar
+/// as g^m (gamma_g)^r
+#[derive(Derivative, CanonicalSerialize, CanonicalDeserialize)]
+#[derivative(
+    Clone(bound = ""),
+    Debug(bound = ""),
+)]
+pub struct ScalarComKey<E: PairingEngine> {
+    /// This is the base for the message
+    pub g: E::G1Affine,
+    ///This is the base for the randomness
+    pub gamma_g: E::G1Affine,
+    /// This is a generator of G2
+    pub h: E::G2Affine,
+}
+
+impl<E: PairingEngine> ToBytes for ScalarComKey<E> {
+    #[inline]
+    fn write<W: Write>(&self, mut writer: W) -> ark_std::io::Result<()> {
+        self.g.write(&mut writer)?;
+        self.gamma_g.write(&mut writer)?;
+        self.h.write(&mut writer)
+    }
+}
