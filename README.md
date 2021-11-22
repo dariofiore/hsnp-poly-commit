@@ -1,10 +1,30 @@
-## Fork of https://github.com/arkworks-rs/poly-commit
+# HSNP Polynomial Commitments
 
-This is a fork of arkworks poly-commit that includes another polynomial commitment scheme that extends KZG10 with additional building blocks.
+This is a fork of [arkworks poly-commit library](https://github.com/arkworks-rs/poly-commit) that includes another polynomial commitment scheme `hsnp_pc` that is an extension of KZG10 with additional building blocks:
 
-### TODO
-Describe here the changes.
+- the generation of a Lagrange-basis commitment key and an algorithm that uses it for committing in linear time to polynomials given in evaluation form.
+- the generation of a `CPsvec` specialized SRS
+- the prover and verification algorithms of `CPev`, a CP-SNARK for committed polynomial evaluations.
+- the prover and verification algorithms of Schnorr's ZK proof of knowledge for Pedersen commitments to scalars.
 
+**WARNING:** This is an academic prototype, and in particular has not received careful code review. This implementation is NOT ready for production use.
+
+## License
+This code is licensed under either of the following licenses, at your discretion.
+
+- [Apache License Version 2.0](LICENSE-APACHE)
+- [MIT License](LICENSE-MIT)
+
+Unless you explicitly state otherwise, any contribution that you submit to this library shall be dual licensed as above (as defined in the Apache v2 License), without any additional terms or conditions.
+
+## Reference paper
+
+[FT21] Dario Fiore, Ida Tucker. Efficient Zero-Knowledge Proofs on Signed Data with Applications to Verifiable Computation on Data Streams. Technical Report, 2021.
+
+## Acknowledgements
+This work has received funding by: the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation program under project PICOCRYPT (grant agreement No. 101001283); a research grant from the Tezos foundation and Nomadic Labs.
+
+# Forked repository
 Below is the information of the original repository.
 
 <h1 align="center">Polynomial Commitments</h1>
