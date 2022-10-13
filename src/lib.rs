@@ -101,9 +101,9 @@ pub mod ipa_pc;
 
 /// An extension of the polynomial commitment in [[KZG10]][kzg],
 /// to support evaluations proofs for committed results.
-/// The construction is detailed in [[FT21]][ft21].
+/// The construction is detailed in [[FT22]][ft22].
 ///
-/// [ft21]: TBA
+/// [ft22]: TBA
 pub mod hsnp_pc;
 
 /// Defines the challenge strategies and challenge generator.
