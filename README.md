@@ -19,7 +19,7 @@ Unless you explicitly state otherwise, any contribution that you submit to this 
 
 ## Reference paper
 
-[FT22] Dario Fiore, Ida Tucker. Efficient Zero-Knowledge Proofs on Signed Data with Applications to Verifiable Computation on Data Streams. ACM CCS, 2022.
+[FT22] Dario Fiore, Ida Tucker. Efficient Zero-Knowledge Proofs on Signed Data with Applications to Verifiable Computation on Data Streams. ACM CCS, 2022. https://eprint.iacr.org/2022/1393
 
 ## Acknowledgements
 This work has received funding by: the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation program under project PICOCRYPT (grant agreement No. 101001283); a research grant from the Tezos foundation and Nomadic Labs.

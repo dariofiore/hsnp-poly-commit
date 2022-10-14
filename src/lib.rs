@@ -103,7 +103,7 @@ pub mod ipa_pc;
 /// to support evaluations proofs for committed results.
 /// The construction is detailed in [[FT22]][ft22].
 ///
-/// [ft22]: TBA
+/// [ft22]: https://eprint.iacr.org/2022/1393
 pub mod hsnp_pc;
 
 /// Defines the challenge strategies and challenge generator.
