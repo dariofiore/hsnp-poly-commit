@@ -3,9 +3,11 @@
 This is a fork of [arkworks poly-commit library](https://github.com/arkworks-rs/poly-commit) that includes another polynomial commitment scheme `hsnp_pc` that is an extension of KZG10 with additional building blocks:
 
 - the generation of a Lagrange-basis commitment key and an algorithm that uses it for committing in linear time to polynomials given in evaluation form.
-- the generation of a `CPsvec` specialized SRS
-- the prover and verification algorithms of `CPev`, a CP-SNARK for committed polynomial evaluations.
+- the generation of a `CPsvec` specialized SRS (see [FT22])
+- the prover and verification algorithms of `CPev`, a CP-SNARK for committed polynomial evaluations defined in [FT22]
 - the prover and verification algorithms of Schnorr's ZK proof of knowledge for Pedersen commitments to scalars.
+
+This repository is used in the [HSNP library](https://github.com/dariofiore/hsnp). 
 
 **WARNING:** This is an academic prototype, and in particular has not received careful code review. This implementation is NOT ready for production use.
 
